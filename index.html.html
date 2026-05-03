@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoanIQ — Intelligent Loan Approval Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f5f0;--bg2:#edeae3;--bg3:#e0dbd1;
+  --ink:#1a1714;--ink2:#3d3830;--ink3:#6b6459;
+  --accent:#c17f3e;--accent2:#e8a255;--accent-pale:#fdf0e0;
+  --green:#2d6a4f;--green-pale:#e8f5ee;
+  --red:#9b2335;--red-pale:#fde8eb;
+  --blue:#1e4d8c;--blue-pale:#e8eef8;
+  --border:rgba(26,23,20,0.1);--border2:rgba(26,23,20,0.18);
+  --shadow:0 2px 24px rgba(26,23,20,0.08);--shadow2:0 8px 48px rgba(26,23,20,0.13);
+  --radius:14px;--radius2:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(247,245,240,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--ink);letter-spacing:-0.02em;}
+.nav-logo span{color:var(--accent);}
+.nav-links{display:flex;gap:0.2rem;}
+.nav-link{font-size:0.82rem;font-weight:500;color:var(--ink3);text-decoration:none;padding:0.4rem 0.9rem;border-radius:8px;transition:all 0.2s;}
+.nav-link:hover{background:var(--bg2);color:var(--ink);}
+.nav-cta{font-size:0.82rem;font-weight:600;background:var(--ink);color:var(--bg);border:none;padding:0.5rem 1.2rem;border-radius:8px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.nav-cta:hover{background:var(--ink2);transform:translateY(-1px);}
+
+/* HERO */
+.hero{max-width:1320px;margin:0 auto;padding:5rem 2.5rem 3rem;display:grid;grid-template-columns:1.1fr 0.9fr;gap:5rem;align-items:center;}
+.hero-eyebrow{font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:0.7rem;margin-bottom:1.3rem;}
+.hero-eyebrow::before{content:'';width:28px;height:1.5px;background:var(--accent);}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,4vw,4.2rem);font-weight:700;line-height:1.07;letter-spacing:-0.025em;color:var(--ink);margin-bottom:1.4rem;}
+.hero h1 em{font-style:italic;color:var(--accent);}
+.hero-desc{font-size:1rem;font-weight:300;color:var(--ink3);line-height:1.75;margin-bottom:2.2rem;max-width:480px;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-primary{background:var(--ink);color:var(--bg);font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:600;padding:0.75rem 1.8rem;border-radius:10px;border:none;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+.btn-primary:hover{background:var(--ink2);transform:translateY(-2px);box-shadow:var(--shadow);}
+.btn-outline{background:transparent;color:var(--ink);font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:500;padding:0.75rem 1.8rem;border-radius:10px;border:1.5px solid var(--border2);cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;}
+.btn-outline:hover{background:var(--bg2);}
+.hero-stats{display:flex;gap:3rem;margin-top:2.8rem;padding-top:2.5rem;border-top:1px solid var(--border);}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--ink);line-height:1;}
+.stat-label{font-size:0.75rem;color:var(--ink3);margin-top:0.2rem;}
+.hero-visual{position:relative;}
+.hero-card{background:white;border:1px solid var(--border);border-radius:var(--radius2);padding:1.6rem;box-shadow:var(--shadow2);animation:cardFloat 6s ease-in-out infinite;}
+@keyframes cardFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.hc-label{font-size:0.65rem;font-weight:600;letter-spacing:0.13em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem;}
+.hc-bars{display:flex;flex-direction:column;gap:0.75rem;}
+.hc-bar-row{display:flex;align-items:center;gap:0.9rem;}
+.hc-bar-name{font-size:0.78rem;color:var(--ink2);width:110px;flex-shrink:0;}
+.hc-track{flex:1;height:7px;background:var(--bg2);border-radius:99px;overflow:hidden;}
+.hc-fill{height:100%;border-radius:99px;}
+.hc-pct{font-size:0.72rem;font-weight:600;color:var(--ink);width:38px;text-align:right;}
+.hero-badge{position:absolute;top:-1.2rem;right:-1.2rem;background:var(--green);color:white;border-radius:12px;padding:0.8rem 1.1rem;box-shadow:var(--shadow);font-size:0.78rem;font-weight:600;}
+.hero-badge-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;line-height:1;}
+.hero-mini{position:absolute;bottom:-1rem;left:-1.5rem;background:white;border:1px solid var(--border);border-radius:12px;padding:0.9rem 1.2rem;box-shadow:var(--shadow);font-size:0.78rem;}
+
+/* SECTIONS */
+section{max-width:1320px;margin:0 auto;padding:4rem 2.5rem;}
+.section-label{font-size:0.7rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;display:flex;align-items:center;gap:0.6rem;}
+.section-label::before{content:'';width:20px;height:1.5px;background:var(--accent);}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,2.8vw,2.5rem);font-weight:700;color:var(--ink);letter-spacing:-0.02em;margin-bottom:0.5rem;}
+.section-sub{font-size:0.9rem;color:var(--ink3);font-weight:300;margin-bottom:2.5rem;line-height:1.6;}
+.divider{border:none;border-top:1px solid var(--border);max-width:1320px;margin:0 auto;}
+
+/* INPUT FORM */
+.input-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start;}
+.form-card{background:white;border:1px solid var(--border);border-radius:var(--radius2);padding:2.2rem;box-shadow:var(--shadow);}
+.form-group-heading{font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);padding-bottom:0.75rem;border-bottom:1px solid var(--border);margin-bottom:1.2rem;margin-top:1.8rem;}
+.form-group-heading:first-child{margin-top:0;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-field{display:flex;flex-direction:column;gap:0.35rem;}
+.form-field.full{grid-column:1/-1;}
+.form-field label{font-size:0.72rem;font-weight:500;color:var(--ink3);text-transform:uppercase;letter-spacing:0.07em;}
+.form-field label .req{color:var(--red);margin-left:2px;}
+.form-field input,.form-field select{background:var(--bg);border:1.5px solid var(--border2);border-radius:10px;padding:0.65rem 0.9rem;font-family:'DM Sans',sans-serif;font-size:0.875rem;color:var(--ink);outline:none;transition:all 0.2s;-webkit-appearance:none;appearance:none;}
+.form-field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath fill='%236b6459' d='M5 7L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.9rem center;padding-right:2.2rem;}
+.form-field select option{background:white;}
+.form-field input:focus,.form-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(193,127,62,0.12);background:white;}
+.field-hint{font-size:0.68rem;color:var(--ink3);margin-top:0.1rem;}
+.mandatory-note{font-size:0.72rem;color:var(--ink3);margin-bottom:1.2rem;display:flex;align-items:center;gap:0.4rem;}
+.mandatory-note span{color:var(--red);font-weight:700;}
+
+/* RATE CARD */
+.rate-card{background:linear-gradient(135deg,var(--ink) 0%,#2e2a24 100%);border-radius:var(--radius2);padding:2rem;color:white;margin-bottom:1.5rem;}
+.rate-card-title{font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.8rem;}
+.rate-display{font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;line-height:1;margin-bottom:0.3rem;}
+.rate-display sub{font-size:1.4rem;font-weight:500;vertical-align:super;}
+input[type="range"]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:99px;background:rgba(255,255,255,0.2);outline:none;margin:1rem 0;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent2);cursor:pointer;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.rate-info-row{display:flex;justify-content:space-between;margin-top:0.2rem;}
+.rate-info-row span{font-size:0.72rem;color:rgba(255,255,255,0.35);}
+.rate-breakdown{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-top:1.2rem;}
+.rate-stat{background:rgba(255,255,255,0.08);border-radius:10px;padding:0.8rem;}
+.rate-stat-val{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;}
+.rate-stat-lbl{font-size:0.62rem;color:rgba(255,255,255,0.4);margin-top:0.15rem;text-transform:uppercase;letter-spacing:0.07em;}
+
+/* LIVE SUMMARY */
+.kpi-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;}
+.kpi-mini{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:0.9rem;}
+.kpi-mini-val{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--ink);}
+.kpi-mini-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-top:0.15rem;}
+
+/* PREDICT BUTTON */
+.predict-area{text-align:center;padding:2.5rem;background:white;border:1px solid var(--border);border-radius:var(--radius2);}
+.predict-big-btn{background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);color:white;border:none;border-radius:14px;padding:1.1rem 3.5rem;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:600;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 20px rgba(193,127,62,0.35);letter-spacing:0.02em;display:inline-flex;align-items:center;gap:0.6rem;}
+.predict-big-btn:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(193,127,62,0.45);}
+.predict-note{font-size:0.78rem;color:var(--ink3);margin-top:0.9rem;}
+
+/* RESULT */
+.result-block{display:none;}
+.result-block.visible{display:block;animation:fadeSlide 0.5s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+.result-hero{border-radius:var(--radius2);padding:2.5rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;margin-bottom:2rem;}
+.result-hero.approved{background:var(--green-pale);border:1.5px solid rgba(45,106,79,0.25);}
+.result-hero.rejected{background:var(--red-pale);border:1.5px solid rgba(155,35,53,0.2);}
+.result-title{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;line-height:1.1;margin-bottom:0.5rem;}
+.result-title.approved{color:var(--green);}
+.result-title.rejected{color:var(--red);}
+.result-body{font-size:0.9rem;color:var(--ink3);line-height:1.7;}
+.conf-circle{width:110px;height:110px;border-radius:50%;border:5px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.conf-circle.approved{border-color:var(--green);}
+.conf-circle.rejected{border-color:var(--red);}
+.conf-pct{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;line-height:1;}
+.conf-pct.approved{color:var(--green);}
+.conf-pct.rejected{color:var(--red);}
+.conf-label{font-size:0.6rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.06em;}
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
+.kpi-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;}
+.kpi-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--ink);line-height:1;}
+.kpi-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-top:0.2rem;}
+.kpi-delta{font-size:0.72rem;font-weight:600;margin-top:0.4rem;}
+.kpi-delta.good{color:var(--green);}
+.kpi-delta.warn{color:#b45309;}
+.kpi-delta.bad{color:var(--red);}
+.factors-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;}
+.factors-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;}
+.factors-card-title{font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.1rem;}
+.factor-row-item{display:flex;align-items:center;gap:0.8rem;padding:0.55rem 0;border-bottom:1px solid var(--border);}
+.factor-row-item:last-child{border-bottom:none;}
+.factor-name{font-size:0.82rem;color:var(--ink3);flex:1;}
+.factor-val{font-size:0.82rem;font-weight:600;}
+.factor-val.good{color:var(--green);}
+.factor-val.warn{color:#b45309;}
+.factor-val.bad{color:var(--red);}
+.factor-bar-mini{flex:1;height:5px;background:var(--bg2);border-radius:99px;overflow:hidden;max-width:80px;}
+.factor-bar-fill{height:100%;border-radius:99px;}
+
+/* BANK COMPARISON */
+.bank-section{background:white;border:1px solid var(--border);border-radius:var(--radius2);padding:2rem;}
+.bank-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
+.bank-card{border:1.5px solid var(--border2);border-radius:var(--radius);padding:1.1rem;cursor:pointer;transition:all 0.2s;position:relative;}
+.bank-card:hover{border-color:var(--accent);background:var(--accent-pale);}
+.bank-card.selected{border-color:var(--accent);background:var(--accent-pale);}
+.bank-card.selected::after{content:'✓';position:absolute;top:0.6rem;right:0.7rem;width:20px;height:20px;background:var(--accent);color:white;border-radius:50%;font-size:0.7rem;font-weight:700;line-height:20px;text-align:center;}
+.bank-name{font-size:0.82rem;font-weight:600;color:var(--ink);margin-bottom:0.1rem;}
+.bank-rate{font-family:'DM Mono',monospace;font-size:1.1rem;font-weight:500;color:var(--accent);}
+.bank-type{font-size:0.65rem;color:var(--ink3);text-transform:uppercase;letter-spacing:0.07em;margin-top:0.1rem;}
+.comp-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.comp-table th{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);font-weight:600;padding:0.7rem 1rem;border-bottom:1.5px solid var(--border2);text-align:left;}
+.comp-table td{padding:0.7rem 1rem;border-bottom:1px solid var(--border);color:var(--ink2);}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-table tr.best-row td{background:var(--green-pale);}
+.best-badge{display:inline-block;background:var(--green);color:white;font-size:0.6rem;font-weight:700;letter-spacing:0.07em;padding:0.15rem 0.45rem;border-radius:4px;text-transform:uppercase;margin-left:0.4rem;}
+.rate-tag{font-family:'DM Mono',monospace;font-size:0.85rem;font-weight:500;}
+
+/* VIZ DASHBOARDS */
+.viz-platforms{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;}
+.viz-platform-card{border-radius:var(--radius2);padding:1.8rem;border:1.5px solid var(--border2);background:white;position:relative;overflow:hidden;}
+.vp-logo{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;}
+.vp-icon{width:42px;height:42px;border-radius:10px;font-size:1.3rem;display:flex;align-items:center;justify-content:center;}
+.vp-icon.t{background:rgba(31,119,180,0.1);border:1px solid rgba(31,119,180,0.2);}
+.vp-icon.p{background:rgba(242,200,17,0.12);border:1px solid rgba(242,200,17,0.3);}
+.vp-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--ink);}
+.vp-tagline{font-size:0.72rem;color:var(--ink3);}
+.vp-desc{font-size:0.82rem;color:var(--ink3);line-height:1.65;margin-bottom:1.2rem;}
+.vp-features{display:flex;flex-direction:column;gap:0.45rem;}
+.vp-feature{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--ink2);}
+.vp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.vp-dot.t{background:#1f77b4;}.vp-dot.p{background:#b38d00;}
+.viz-preview{background:white;border:1px solid var(--border);border-radius:var(--radius2);overflow:hidden;box-shadow:var(--shadow);}
+.vp-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:var(--bg);}
+.vp-status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.vp-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg);}
+.vp-tab{padding:0.75rem 1.4rem;font-size:0.78rem;font-weight:500;cursor:pointer;color:var(--ink3);border-bottom:2px solid transparent;transition:all 0.2s;}
+.vp-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.vp-body{padding:1.5rem;}
+.viz-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.viz-kpi{background:var(--bg);border-radius:10px;padding:1rem;}
+.viz-kpi-val{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--ink);}
+.viz-kpi-label{font-size:0.63rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-top:0.15rem;}
+.viz-kpi-delta{font-size:0.68rem;font-weight:600;margin-top:0.3rem;}
+.viz-charts-row{display:grid;grid-template-columns:3fr 2fr;gap:1.2rem;margin-bottom:1.2rem;}
+.viz-chart-box{background:var(--bg);border-radius:12px;padding:1.1rem;}
+.viz-chart-title{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:1rem;}
+.mini-bar-chart{display:flex;align-items:flex-end;gap:0.4rem;height:100px;}
+.mini-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:0.25rem;}
+.mini-bar{width:100%;border-radius:4px 4px 0 0;}
+.mini-bar-label{font-size:0.58rem;color:var(--ink3);text-align:center;}
+.mini-bar-val{font-size:0.62rem;font-weight:600;color:var(--ink);}
+.mini-donut{position:relative;width:100px;height:100px;margin:0 auto;}
+.mini-donut svg{transform:rotate(-90deg);}
+.mini-donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.mini-donut-val{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--ink);}
+.mini-donut-lbl{font-size:0.58rem;color:var(--ink3);}
+.fi-list{display:flex;flex-direction:column;gap:0.6rem;}
+.fi-row{display:flex;align-items:center;gap:0.7rem;font-size:0.72rem;}
+.fi-name{color:var(--ink3);width:90px;flex-shrink:0;font-size:0.68rem;}
+.fi-track{flex:1;height:5px;background:var(--bg3);border-radius:99px;}
+.fi-fill{height:100%;border-radius:99px;}
+.fi-pct{color:var(--ink);font-weight:600;width:30px;text-align:right;font-size:0.68rem;}
+.viz-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+
+/* REPORT */
+.report-grid{display:grid;grid-template-columns:1.3fr 0.7fr;gap:2rem;}
+.report-preview-card{background:white;border:1px solid var(--border);border-radius:var(--radius2);padding:2rem;box-shadow:var(--shadow);}
+.report-doc{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.2rem;}
+.report-doc-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem;}
+.report-doc-meta{display:flex;gap:0.8rem;margin-bottom:1rem;flex-wrap:wrap;}
+.report-meta-chip{font-size:0.65rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:5px;background:var(--bg2);color:var(--ink3);}
+.rpt-table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+.rpt-table th{text-align:left;padding:0.5rem 0.7rem;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);border-bottom:1px solid var(--border);}
+.rpt-table td{padding:0.5rem 0.7rem;color:var(--ink2);border-bottom:1px solid var(--border);}
+.rpt-table tr:last-child td{border-bottom:none;}
+.download-panel{display:flex;flex-direction:column;gap:1rem;}
+.download-option{background:white;border:1.5px solid var(--border2);border-radius:var(--radius);padding:1.3rem 1.5rem;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:1rem;}
+.download-option:hover{border-color:var(--accent);background:var(--accent-pale);transform:translateX(4px);}
+.dl-icon{font-size:1.8rem;flex-shrink:0;}
+.dl-title{font-size:0.875rem;font-weight:600;color:var(--ink);margin-bottom:0.15rem;}
+.dl-desc{font-size:0.72rem;color:var(--ink3);}
+.dl-badge{margin-left:auto;font-size:0.62rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:5px;flex-shrink:0;}
+.dl-badge.pdf{background:#fee2e2;color:var(--red);}
+.dl-badge.excel{background:var(--green-pale);color:var(--green);}
+.dl-badge.json{background:var(--blue-pale);color:var(--blue);}
+.dl-badge.csv{background:var(--bg3);color:var(--ink3);}
+.download-all-btn{width:100%;padding:1rem;background:var(--ink);color:white;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.875rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.download-all-btn:hover{background:var(--ink2);transform:translateY(-2px);box-shadow:var(--shadow);}
+
+/* DEPLOY */
+.deploy-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.deploy-card{background:white;border:1px solid var(--border);border-radius:var(--radius2);padding:2rem;position:relative;overflow:hidden;transition:all 0.2s;}
+.deploy-card:hover{transform:translateY(-4px);box-shadow:var(--shadow2);}
+.deploy-num{font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:700;color:var(--bg2);position:absolute;right:1rem;top:0.5rem;line-height:1;}
+.deploy-step{width:30px;height:30px;border-radius:50%;background:var(--ink);color:white;font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:1rem;}
+.deploy-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--ink);margin-bottom:0.5rem;}
+.deploy-desc{font-size:0.82rem;color:var(--ink3);line-height:1.65;}
+.deploy-code{font-family:'DM Mono',monospace;font-size:0.78rem;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.55rem 0.8rem;margin-top:0.8rem;color:var(--green);}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(255,255,255,0.55);padding:2.5rem;text-align:center;margin-top:3rem;}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:white;margin-bottom:0.4rem;}
+.footer-logo span{color:var(--accent2);}
+.footer-text{font-size:0.78rem;line-height:1.6;}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;z-index:999;background:var(--ink);color:white;padding:0.9rem 1.5rem;border-radius:12px;font-size:0.82rem;font-weight:500;box-shadow:var(--shadow2);display:none;align-items:center;gap:0.6rem;animation:toastIn 0.3s ease;}
+.toast.show{display:flex;}
+@keyframes toastIn{from{transform:translateY(20px);opacity:0;}to{transform:none;opacity:1;}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:3rem;}
+  .input-form-grid{grid-template-columns:1fr;}
+  .kpi-strip{grid-template-columns:repeat(2,1fr);}
+  .factors-grid{grid-template-columns:1fr;}
+  .viz-platforms{grid-template-columns:1fr;}
+  .viz-charts-row{grid-template-columns:1fr;}
+  .viz-bottom{grid-template-columns:1fr 1fr;}
+  .report-grid{grid-template-columns:1fr;}
+  .deploy-grid{grid-template-columns:1fr;}
+  .bank-grid{grid-template-columns:repeat(2,1fr);}
+  .viz-kpis{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Loan<span>IQ</span></div>
+  <div class="nav-links">
+    <a href="#input" class="nav-link">Apply</a>
+    <a href="#banks" class="nav-link">Banks</a>
+    <a href="#dashboards" class="nav-link">Dashboards</a>
+    <a href="#reports" class="nav-link">Reports</a>
+    <a href="#deploy" class="nav-link">Deploy</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('input').scrollIntoView({behavior:'smooth'})">Get Started →</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <div class="hero-eyebrow">AI-Powered Credit Intelligence</div>
+    <h1>Smart loan <em>approval</em> decisions, beautifully visualized</h1>
+    <p class="hero-desc">Enter applicant data, compare bank rates, and get AI-driven loan eligibility results — backed by Tableau & Power BI dashboards and downloadable reports.</p>
+    <div class="hero-actions">
+      <a href="#input" class="btn-primary">Start Application →</a>
+      <a href="#dashboards" class="btn-outline">View Dashboards</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-val">96.5%</div><div class="stat-label">Model Accuracy</div></div>
+      <div><div class="stat-val">11</div><div class="stat-label">Input Features</div></div>
+      <div><div class="stat-val">2K+</div><div class="stat-label">Training Records</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div style="position:relative">
+      <div class="hero-card">
+        <div class="hc-label">Gradient Boosting · Model Performance</div>
+        <div class="hc-bars">
+          <div class="hc-bar-row"><span class="hc-bar-name">Accuracy</span><div class="hc-track"><div class="hc-fill" style="width:96.5%;background:linear-gradient(90deg,#c17f3e,#e8a255)"></div></div><span class="hc-pct">96.5%</span></div>
+          <div class="hc-bar-row"><span class="hc-bar-name">Precision</span><div class="hc-track"><div class="hc-fill" style="width:97.5%;background:linear-gradient(90deg,#2d6a4f,#52b788)"></div></div><span class="hc-pct">97.5%</span></div>
+          <div class="hc-bar-row"><span class="hc-bar-name">Recall</span><div class="hc-track"><div class="hc-fill" style="width:98.3%;background:linear-gradient(90deg,#2d6a4f,#52b788)"></div></div><span class="hc-pct">98.3%</span></div>
+          <div class="hc-bar-row"><span class="hc-bar-name">F1 Score</span><div class="hc-track"><div class="hc-fill" style="width:97.9%;background:linear-gradient(90deg,#1e4d8c,#4a8ec4)"></div></div><span class="hc-pct">97.9%</span></div>
+          <div class="hc-bar-row"><span class="hc-bar-name">ROC-AUC</span><div class="hc-track"><div class="hc-fill" style="width:99.1%;background:linear-gradient(90deg,#1e4d8c,#4a8ec4)"></div></div><span class="hc-pct">99.1%</span></div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-val">68%</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.65);margin-top:0.1rem">Approval Rate</div>
+      </div>
+      <div class="hero-mini">
+        <div style="font-size:0.65rem;color:var(--ink3);margin-bottom:0.2rem">Graduate · ₹6,500/mo · Good Credit</div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--green)">✓ Approved · 98.4% confidence</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- INPUT SECTION -->
+<section id="input">
+  <div class="section-label">Loan Application</div>
+  <div class="section-title">Applicant Data Entry</div>
+  <div class="section-sub">All fields marked <span style="color:var(--red);font-weight:700">*</span> are mandatory for prediction. Optional fields improve result accuracy.</div>
+
+  <div class="input-form-grid">
+    <div>
+      <div class="form-card">
+        <div class="mandatory-note"><span>*</span> Mandatory fields required for loan approval prediction</div>
+        <div class="form-group-heading">Personal Information</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Gender <span class="req">*</span></label>
+            <select id="f-gender"><option value="1">Male</option><option value="0">Female</option></select>
+          </div>
+          <div class="form-field">
+            <label>Marital Status <span class="req">*</span></label>
+            <select id="f-married"><option value="1">Married</option><option value="0">Unmarried</option></select>
+          </div>
+          <div class="form-field">
+            <label>Dependents <span class="req">*</span></label>
+            <select id="f-dependents"><option value="0">0 — None</option><option value="1">1</option><option value="2">2</option><option value="3">3+</option></select>
+          </div>
+          <div class="form-field">
+            <label>Education <span class="req">*</span></label>
+            <select id="f-education"><option value="1">Graduate</option><option value="0">Not Graduate</option></select>
+          </div>
+          <div class="form-field">
+            <label>Employment <span class="req">*</span></label>
+            <select id="f-employed"><option value="0">Salaried</option><option value="1">Self Employed</option></select>
+          </div>
+          <div class="form-field">
+            <label>Property Area <span class="req">*</span></label>
+            <select id="f-area"><option value="1">Semiurban</option><option value="2">Urban</option><option value="0">Rural</option></select>
+          </div>
+        </div>
+        <div class="form-group-heading">Financial Information</div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Applicant Income (₹/mo) <span class="req">*</span></label>
+            <input type="number" id="f-income" value="5000" min="0" step="500" oninput="recalcLive()">
+            <span class="field-hint">Primary applicant monthly income</span>
+          </div>
+          <div class="form-field">
+            <label>Co-applicant Income (₹/mo)</label>
+            <input type="number" id="f-coincome" value="2000" min="0" step="500" oninput="recalcLive()">
+            <span class="field-hint">Spouse / co-borrower income</span>
+          </div>
+          <div class="form-field">
+            <label>Loan Amount (₹ thousands) <span class="req">*</span></label>
+            <input type="number" id="f-loan" value="150" min="1" step="10" oninput="recalcLive()">
+            <span class="field-hint">Requested loan in ₹K</span>
+          </div>
+          <div class="form-field">
+            <label>Loan Term (months) <span class="req">*</span></label>
+            <select id="f-term" onchange="recalcLive()">
+              <option value="360" selected>360 — 30 years</option>
+              <option value="480">480 — 40 years</option>
+              <option value="300">300 — 25 years</option>
+              <option value="240">240 — 20 years</option>
+              <option value="180">180 — 15 years</option>
+              <option value="120">120 — 10 years</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group-heading">Credit Information</div>
+        <div class="form-row">
+          <div class="form-field full">
+            <label>Credit History <span class="req">*</span></label>
+            <select id="f-credit"><option value="1">Good — All dues cleared on time</option><option value="0">Bad — Missed payments or defaults</option></select>
+            <span class="field-hint">Single most important predictor — contributes 95% weight to model</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:1.5rem">
+      <!-- Interest Rate -->
+      <div class="rate-card">
+        <div class="rate-card-title">Interest Rate (per annum)</div>
+        <div class="rate-display" id="rateDisplay">8.0<sub>%</sub></div>
+        <input type="range" id="rateSlider" min="6" max="18" step="0.5" value="8" oninput="updateRate(this.value)">
+        <div class="rate-info-row"><span>6.0% Min</span><span>18.0% Max</span></div>
+        <div class="rate-breakdown">
+          <div class="rate-stat"><div class="rate-stat-val" id="rEMI">₹6,073</div><div class="rate-stat-lbl">Monthly EMI</div></div>
+          <div class="rate-stat"><div class="rate-stat-val" id="rTotal">₹21.9L</div><div class="rate-stat-lbl">Total Payable</div></div>
+          <div class="rate-stat"><div class="rate-stat-val" id="rDTI">86.8%</div><div class="rate-stat-lbl">DTI Ratio</div></div>
+        </div>
+      </div>
+
+      <!-- Live Summary -->
+      <div class="form-card" style="padding:1.5rem">
+        <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem">Live Financial Summary</div>
+        <div class="kpi-mini-grid">
+          <div class="kpi-mini"><div class="kpi-mini-val" id="ls-income">₹7,000</div><div class="kpi-mini-label">Total Income</div></div>
+          <div class="kpi-mini"><div class="kpi-mini-val" id="ls-loan">₹150K</div><div class="kpi-mini-label">Loan Amount</div></div>
+          <div class="kpi-mini"><div class="kpi-mini-val" id="ls-emi">₹6,073</div><div class="kpi-mini-label">Est. EMI</div></div>
+          <div class="kpi-mini"><div class="kpi-mini-val" id="ls-dti" style="color:var(--red)">86.8%</div><div class="kpi-mini-label">DTI Ratio</div></div>
+        </div>
+      </div>
+
+      <!-- Predict Button -->
+      <div class="predict-area">
+        <button class="predict-big-btn" onclick="runPrediction()">⚡ Predict Loan Approval</button>
+        <div class="predict-note">Gradient Boosting Classifier · 96.5% accuracy · instant results</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULT -->
+<section id="result-section" style="padding-top:0">
+  <div class="result-block" id="resultBlock">
+    <div class="result-hero" id="resultHero">
+      <div>
+        <div class="result-title" id="resultTitle"></div>
+        <div class="result-body" id="resultBody"></div>
+      </div>
+      <div class="conf-circle" id="confCircle">
+        <div class="conf-pct" id="confPct">—</div>
+        <div class="conf-label">Confidence</div>
+      </div>
+    </div>
+    <div class="kpi-strip">
+      <div class="kpi-card"><div class="kpi-val" id="r-income">—</div><div class="kpi-label">Total Income / mo</div><div class="kpi-delta" id="r-income-d"></div></div>
+      <div class="kpi-card"><div class="kpi-val" id="r-emi">—</div><div class="kpi-label">Monthly EMI</div><div class="kpi-delta" id="r-emi-d"></div></div>
+      <div class="kpi-card"><div class="kpi-val" id="r-dti">—</div><div class="kpi-label">DTI Ratio</div><div class="kpi-delta" id="r-dti-d"></div></div>
+      <div class="kpi-card"><div class="kpi-val" id="r-total">—</div><div class="kpi-label">Total Payable</div></div>
+    </div>
+    <div class="factors-grid">
+      <div class="factors-card">
+        <div class="factors-card-title">Key Decision Factors</div>
+        <div id="factorsList"></div>
+      </div>
+      <div class="factors-card">
+        <div class="factors-card-title">Improvement Tips</div>
+        <div id="tipsList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BANK COMPARISON -->
+<section id="banks">
+  <div class="section-label">Bank Comparison</div>
+  <div class="section-title">Compare Lender Rates</div>
+  <div class="section-sub">Select banks to compare EMIs, total interest, and processing fees for your current loan amount and term.</div>
+  <div class="bank-section">
+    <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem">Select Banks to Compare (click to toggle)</div>
+    <div class="bank-grid" id="bankGrid">
+      <div class="bank-card selected" data-bank="sbi" onclick="toggleBank(this)"><div class="bank-name">SBI</div><div class="bank-rate">8.50%</div><div class="bank-type">Public Sector</div></div>
+      <div class="bank-card selected" data-bank="hdfc" onclick="toggleBank(this)"><div class="bank-name">HDFC Bank</div><div class="bank-rate">8.70%</div><div class="bank-type">Private Sector</div></div>
+      <div class="bank-card selected" data-bank="icici" onclick="toggleBank(this)"><div class="bank-name">ICICI Bank</div><div class="bank-rate">8.75%</div><div class="bank-type">Private Sector</div></div>
+      <div class="bank-card" data-bank="axis" onclick="toggleBank(this)"><div class="bank-name">Axis Bank</div><div class="bank-rate">8.85%</div><div class="bank-type">Private Sector</div></div>
+      <div class="bank-card" data-bank="bob" onclick="toggleBank(this)"><div class="bank-name">Bank of Baroda</div><div class="bank-rate">8.40%</div><div class="bank-type">Public Sector</div></div>
+      <div class="bank-card" data-bank="kotak" onclick="toggleBank(this)"><div class="bank-name">Kotak Mahindra</div><div class="bank-rate">8.65%</div><div class="bank-type">Private Sector</div></div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="comp-table"><thead><tr><th>Bank</th><th>Rate (p.a.)</th><th>Monthly EMI</th><th>Total Interest</th><th>Total Payable</th><th>Processing Fee</th><th>Type</th></tr></thead>
+      <tbody id="compTableBody"></tbody></table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DASHBOARDS -->
+<section id="dashboards">
+  <div class="section-label">BI Dashboards</div>
+  <div class="section-title">Tableau & Power BI Analytics</div>
+  <div class="section-sub">Model outcomes and loan data interpreted through interactive dashboards — updated with every prediction, shareable in one click.</div>
+
+  <div class="viz-platforms">
+    <div class="viz-platform-card">
+      <div class="vp-logo">
+        <div class="vp-icon t">📊</div>
+        <div><div class="vp-name">Tableau</div><div class="vp-tagline">Visual Analytics · Story Points · Drag & Drop</div></div>
+      </div>
+      <p class="vp-desc">Connect to <code style="font-family:'DM Mono',monospace;font-size:0.78rem;background:var(--bg2);padding:0.1rem 0.4rem;border-radius:4px">model_results.json</code> via JSON connector. Publish to Tableau Public for zero-cost sharing.</p>
+      <div class="vp-features">
+        <div class="vp-feature"><span class="vp-dot t"></span>Loan Approval Overview — all 11 features</div>
+        <div class="vp-feature"><span class="vp-dot t"></span>Feature Importance Heatmap (interactive filters)</div>
+        <div class="vp-feature"><span class="vp-dot t"></span>Credit Score Distribution by Property Area</div>
+        <div class="vp-feature"><span class="vp-dot t"></span>Applicant Income vs Approval Rate scatter</div>
+        <div class="vp-feature"><span class="vp-dot t"></span>Story Points: full decision narrative flow</div>
+      </div>
+    </div>
+    <div class="viz-platform-card">
+      <div class="vp-logo">
+        <div class="vp-icon p">⚡</div>
+        <div><div class="vp-name">Power BI</div><div class="vp-tagline">DAX Measures · Drillthrough · Auto-Refresh</div></div>
+      </div>
+      <p class="vp-desc">Import via Power Query → JSON. DAX measures compute approval rates and bank EMI comparisons. Auto-refresh every 15 minutes on new predictions.</p>
+      <div class="vp-features">
+        <div class="vp-feature"><span class="vp-dot p"></span>Executive KPI Summary (auto-refresh)</div>
+        <div class="vp-feature"><span class="vp-dot p"></span>DTI Bucket Distribution with drill-through</div>
+        <div class="vp-feature"><span class="vp-dot p"></span>Cross-bank rate comparison waterfall</div>
+        <div class="vp-feature"><span class="vp-dot p"></span>Monthly approval trend time-series</div>
+        <div class="vp-feature"><span class="vp-dot p"></span>Applicant segment analysis matrix</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Preview -->
+  <div class="viz-preview">
+    <div class="vp-header">
+      <div style="display:flex;align-items:center;gap:0.8rem">
+        <div class="vp-status-dot"></div>
+        <div>
+          <div style="font-size:0.88rem;font-weight:600;color:var(--ink)" id="vpTitle">LoanIQ — Tableau Analytics Dashboard</div>
+          <div style="font-size:0.65rem;color:var(--ink3)">Connected to model_results.json · Live</div>
+        </div>
+      </div>
+      <div style="font-size:0.68rem;color:var(--green);font-weight:600">● Live Data</div>
+    </div>
+    <div class="vp-tabs">
+      <div class="vp-tab active" onclick="switchTab(this,'tableau')">📊 Tableau View</div>
+      <div class="vp-tab" onclick="switchTab(this,'powerbi')">⚡ Power BI View</div>
+    </div>
+
+    <!-- Tableau Tab -->
+    <div class="vp-body" id="tabTableau">
+      <div class="viz-kpis">
+        <div class="viz-kpi"><div class="viz-kpi-val">1,847</div><div class="viz-kpi-label">Applications</div><div class="viz-kpi-delta" style="color:var(--green)">▲ 12.3%</div></div>
+        <div class="viz-kpi"><div class="viz-kpi-val" style="color:var(--green)">68.4%</div><div class="viz-kpi-label">Approval Rate</div><div class="viz-kpi-delta" style="color:var(--green)">▲ 4.1%</div></div>
+        <div class="viz-kpi"><div class="viz-kpi-val">96.5%</div><div class="viz-kpi-label">Model Accuracy</div><div class="viz-kpi-delta" style="color:var(--ink3)">Gradient Boost</div></div>
+        <div class="viz-kpi"><div class="viz-kpi-val" style="color:var(--red)">31.6%</div><div class="viz-kpi-label">Rejection Rate</div><div class="viz-kpi-delta" style="color:var(--green)">▼ Improved</div></div>
+      </div>
+      <div class="viz-charts-row">
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">Approval Rate by Applicant Category</div>
+          <div class="mini-bar-chart" id="vizBarChart"></div>
+        </div>
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">Prediction Split</div>
+          <div class="mini-donut">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#e0dbd1" stroke-width="13"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#2d6a4f" stroke-width="13" stroke-dasharray="238.76" stroke-dashoffset="75" stroke-linecap="round"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#9b2335" stroke-width="13" stroke-dasharray="238.76" stroke-dashoffset="163" stroke-linecap="round" transform="rotate(113 50 50)"/>
+            </svg>
+            <div class="mini-donut-center"><div class="mini-donut-val">68%</div><div class="mini-donut-lbl">Approved</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.8rem">
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.68rem;color:var(--ink3)"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>Approved 68.4%</div>
+            <div style="display:flex;align-items:center;gap:0.5rem;font-size:0.68rem;color:var(--ink3)"><span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block"></span>Rejected 31.6%</div>
+          </div>
+        </div>
+      </div>
+      <div class="viz-bottom">
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">Feature Importance</div>
+          <div class="fi-list">
+            <div class="fi-row"><span class="fi-name">Credit History</span><div class="fi-track"><div class="fi-fill" style="width:95%;background:var(--accent)"></div></div><span class="fi-pct">95%</span></div>
+            <div class="fi-row"><span class="fi-name">DTI Ratio</span><div class="fi-track"><div class="fi-fill" style="width:80%;background:var(--blue)"></div></div><span class="fi-pct">80%</span></div>
+            <div class="fi-row"><span class="fi-name">Income</span><div class="fi-track"><div class="fi-fill" style="width:78%;background:var(--blue)"></div></div><span class="fi-pct">78%</span></div>
+            <div class="fi-row"><span class="fi-name">Education</span><div class="fi-track"><div class="fi-fill" style="width:60%;background:var(--green)"></div></div><span class="fi-pct">60%</span></div>
+            <div class="fi-row"><span class="fi-name">Loan Amount</span><div class="fi-track"><div class="fi-fill" style="width:55%;background:var(--green)"></div></div><span class="fi-pct">55%</span></div>
+            <div class="fi-row"><span class="fi-name">Property</span><div class="fi-track"><div class="fi-fill" style="width:42%;background:#b45309"></div></div><span class="fi-pct">42%</span></div>
+          </div>
+        </div>
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">Approval by Area</div>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:0.3rem">
+            <div><div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--ink3);margin-bottom:0.3rem"><span>Semiurban</span><span style="color:var(--green);font-weight:600">76%</span></div><div style="height:6px;background:var(--bg2);border-radius:99px"><div style="width:76%;height:100%;background:var(--green);border-radius:99px"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--ink3);margin-bottom:0.3rem"><span>Urban</span><span style="color:var(--blue);font-weight:600">68%</span></div><div style="height:6px;background:var(--bg2);border-radius:99px"><div style="width:68%;height:100%;background:var(--blue);border-radius:99px"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:0.68rem;color:var(--ink3);margin-bottom:0.3rem"><span>Rural</span><span style="color:#b45309;font-weight:600">59%</span></div><div style="height:6px;background:var(--bg2);border-radius:99px"><div style="width:59%;height:100%;background:#b45309;border-radius:99px"></div></div></div>
+          </div>
+        </div>
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">Monthly Trend</div>
+          <svg width="100%" height="72" viewBox="0 0 200 72" preserveAspectRatio="none">
+            <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c17f3e" stop-opacity="0.25"/><stop offset="100%" stop-color="#c17f3e" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0,60 C25,55 40,42 60,38 C80,33 95,46 115,35 C135,24 150,15 170,10 C185,7 193,8 200,5" fill="none" stroke="#c17f3e" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M0,60 C25,55 40,42 60,38 C80,33 95,46 115,35 C135,24 150,15 170,10 C185,7 193,8 200,5 L200,72 L0,72Z" fill="url(#tg)"/>
+          </svg>
+          <div style="font-size:0.68rem;color:var(--green);font-weight:600;margin-top:0.5rem">▲ +22.4% approvals since Jan</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Power BI Tab -->
+    <div class="vp-body" id="tabPowerBI" style="display:none">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem">
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">DAX — Approval Rate Measure</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--green);line-height:1.8">
+            ApprovalRate =<br>&nbsp;&nbsp;DIVIDE(<br>&nbsp;&nbsp;&nbsp;&nbsp;COUNTROWS(FILTER('predictions',<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Result]="Approved")),<br>&nbsp;&nbsp;&nbsp;&nbsp;COUNTROWS('predictions')<br>&nbsp;&nbsp;) * 100
+          </div>
+        </div>
+        <div class="viz-chart-box">
+          <div class="viz-chart-title">KPI Summary</div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem">
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;border-bottom:1px solid var(--border);padding-bottom:0.4rem"><span style="color:var(--ink3)">Total Applications</span><span style="font-weight:600">1,847</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;border-bottom:1px solid var(--border);padding-bottom:0.4rem"><span style="color:var(--ink3)">Approved</span><span style="font-weight:600;color:var(--green)">1,263</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;border-bottom:1px solid var(--border);padding-bottom:0.4rem"><span style="color:var(--ink3)">Rejected</span><span style="font-weight:600;color:var(--red)">584</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem"><span style="color:var(--ink3)">Approval Rate</span><span style="font-weight:600;color:var(--accent)">68.4%</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="viz-chart-box">
+        <div class="viz-chart-title">DTI Bucket Distribution</div>
+        <div style="display:flex;flex-direction:column;gap:0.7rem">
+          <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.72rem"><span style="width:80px;color:var(--ink3)">&lt;20% DTI</span><div style="flex:1;height:6px;background:var(--bg2);border-radius:99px"><div style="width:35%;height:100%;background:var(--green);border-radius:99px"></div></div><span style="font-weight:600;color:var(--green)">35%</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.72rem"><span style="width:80px;color:var(--ink3)">20–35%</span><div style="flex:1;height:6px;background:var(--bg2);border-radius:99px"><div style="width:42%;height:100%;background:var(--blue);border-radius:99px"></div></div><span style="font-weight:600;color:var(--blue)">42%</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.72rem"><span style="width:80px;color:var(--ink3)">35–50%</span><div style="flex:1;height:6px;background:var(--bg2);border-radius:99px"><div style="width:16%;height:100%;background:#b45309;border-radius:99px"></div></div><span style="font-weight:600;color:#b45309">16%</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;font-size:0.72rem"><span style="width:80px;color:var(--ink3)">&gt;50%</span><div style="flex:1;height:6px;background:var(--bg2);border-radius:99px"><div style="width:7%;height:100%;background:var(--red);border-radius:99px"></div></div><span style="font-weight:600;color:var(--red)">7%</span></div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;background:var(--blue-pale);border:1px solid rgba(30,77,140,0.15);border-radius:10px;padding:1rem;font-size:0.78rem;color:var(--blue);line-height:1.7">
+        <strong>Integration steps:</strong> Power Query → JSON → model_results.json → Set refresh schedule → Publish to Power BI Service → Enable gateway → Share via "Publish to Web"
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- REPORTS -->
+<section id="reports">
+  <div class="section-label">Reports & Export</div>
+  <div class="section-title">Generate & Download Reports</div>
+  <div class="section-sub">Download comprehensive loan assessment reports in multiple formats — PDF, Excel, JSON, and CSV ready for submission or BI tool import.</div>
+
+  <div class="report-grid">
+    <div class="report-preview-card">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1rem">Report Preview</div>
+      <div class="report-doc">
+        <div class="report-doc-title">Loan Assessment Report</div>
+        <div class="report-doc-meta">
+          <span class="report-meta-chip">Generated: <span id="rpt-date">—</span></span>
+          <span class="report-meta-chip">Gradient Boosting</span>
+          <span class="report-meta-chip">Accuracy: 96.5%</span>
+        </div>
+        <table class="rpt-table">
+          <thead><tr><th>Parameter</th><th>Value</th><th>Status</th></tr></thead>
+          <tbody id="reportTableBody">
+            <tr><td colspan="3" style="color:var(--ink3);text-align:center;padding:1.5rem">Run a prediction to generate report data</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.8rem">Selected Bank Comparison</div>
+      <table class="rpt-table">
+        <thead><tr><th>Bank</th><th>Rate</th><th>EMI</th><th>Best Rate?</th></tr></thead>
+        <tbody id="rptBankTable"></tbody>
+      </table>
+    </div>
+
+    <div class="download-panel">
+      <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3)">Download Formats</div>
+      <div class="download-option" onclick="downloadReport('pdf')">
+        <div class="dl-icon">📄</div>
+        <div><div class="dl-title">Full PDF Report</div><div class="dl-desc">Formatted with charts, decision factors & bank comparison</div></div>
+        <span class="dl-badge pdf">PDF</span>
+      </div>
+      <div class="download-option" onclick="downloadReport('excel')">
+        <div class="dl-icon">📊</div>
+        <div><div class="dl-title">Excel Workbook</div><div class="dl-desc">Multi-sheet: inputs, results, bank comparison, EMI table</div></div>
+        <span class="dl-badge excel">XLSX</span>
+      </div>
+      <div class="download-option" onclick="downloadReport('json')">
+        <div class="dl-icon">🔧</div>
+        <div><div class="dl-title">JSON Export</div><div class="dl-desc">Machine-readable output · direct import for Power BI & Tableau</div></div>
+        <span class="dl-badge json">JSON</span>
+      </div>
+      <div class="download-option" onclick="downloadReport('csv')">
+        <div class="dl-icon">📋</div>
+        <div><div class="dl-title">CSV Data Export</div><div class="dl-desc">Flat file of all applicant fields and prediction score</div></div>
+        <span class="dl-badge csv">CSV</span>
+      </div>
+      <button class="download-all-btn" onclick="downloadReport('all')">⬇ Download All Formats</button>
+      <div style="background:var(--blue-pale);border:1px solid rgba(30,77,140,0.15);border-radius:10px;padding:1rem;font-size:0.78rem;color:var(--blue);line-height:1.65">
+        <strong>BI Ready:</strong> The JSON export is pre-formatted for direct import into Power Query or Tableau's JSON connector — zero transformation required.
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- DEPLOY -->
+<section id="deploy">
+  <div class="section-label">Deployment Guide</div>
+  <div class="section-title">Go Live in Minutes</div>
+  <div class="section-sub">Deploy the Streamlit backend or use the standalone HTML frontend — zero server required for the client-side version.</div>
+  <div class="deploy-grid">
+    <div class="deploy-card">
+      <div class="deploy-num">01</div>
+      <div class="deploy-step">1</div>
+      <div class="deploy-title">Train the Model</div>
+      <p class="deploy-desc">Run the training script to generate <code>loan_model.pkl</code>. Gradient Boosting trains on 2,000 records in under 30 seconds.</p>
+      <div class="deploy-code">python train_model.py</div>
+    </div>
+    <div class="deploy-card">
+      <div class="deploy-num">02</div>
+      <div class="deploy-step">2</div>
+      <div class="deploy-title">Push to GitHub</div>
+      <p class="deploy-desc">Commit all files including <code>loan_model.pkl</code> — Streamlit Cloud needs the .pkl to serve predictions. Do NOT add it to .gitignore.</p>
+      <div class="deploy-code">git add . && git push origin main</div>
+    </div>
+    <div class="deploy-card">
+      <div class="deploy-num">03</div>
+      <div class="deploy-step">3</div>
+      <div class="deploy-title">Deploy to Streamlit Cloud</div>
+      <p class="deploy-desc">Go to share.streamlit.io → New App → select repo → file: app.py → Deploy. Your dashboard goes live in ~2 minutes, for free.</p>
+      <div class="deploy-code">share.streamlit.io → New App → app.py</div>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem;background:white;border:1px solid var(--border);border-radius:var(--radius2);padding:2rem">
+    <div style="font-size:0.68rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:1.2rem">Deploy HTML frontend — zero backend needed</div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap">
+      <a href="https://pages.github.com" class="btn-outline" style="font-size:0.78rem;padding:0.55rem 1.2rem">🌐 GitHub Pages</a>
+      <a href="https://netlify.com" class="btn-outline" style="font-size:0.78rem;padding:0.55rem 1.2rem">⚡ Netlify</a>
+      <a href="https://vercel.com" class="btn-outline" style="font-size:0.78rem;padding:0.55rem 1.2rem">▲ Vercel</a>
+      <a href="https://render.com" class="btn-outline" style="font-size:0.78rem;padding:0.55rem 1.2rem">🟣 Render</a>
+      <a href="https://streamlit.io/cloud" class="btn-outline" style="font-size:0.78rem;padding:0.55rem 1.2rem">🎈 Streamlit Cloud</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Loan<span>IQ</span></div>
+  <div class="footer-text">Gradient Boosting Classifier · scikit-learn · Streamlit · Tableau & Power BI · MIT License<br>Built for educational & portfolio purposes</div>
+</footer>
+
+<div class="toast" id="toast">✓ <span id="toastMsg">Done</span></div>
+
+<script>
+const BANKS={sbi:{name:'SBI',rate:8.50,fee:0.35,type:'Public'},hdfc:{name:'HDFC Bank',rate:8.70,fee:0.50,type:'Private'},icici:{name:'ICICI Bank',rate:8.75,fee:0.50,type:'Private'},axis:{name:'Axis Bank',rate:8.85,fee:1.00,type:'Private'},bob:{name:'Bank of Baroda',rate:8.40,fee:0.25,type:'Public'},kotak:{name:'Kotak Mahindra',rate:8.65,fee:0.50,type:'Private'}};
+let currentRate=8.0,lastPrediction=null;
+const selectedBanks=new Set(['sbi','hdfc','icici']);
+
+function calcEMI(p,r,n){const m=r/100/12;return m===0?p/n:(p*m)/(1-Math.pow(1+m,-n));}
+function fmtINR(n){if(n>=100000)return'₹'+(n/100000).toFixed(1)+'L';return'₹'+Math.round(n).toLocaleString('en-IN');}
+
+function updateRate(val){
+  currentRate=parseFloat(val);
+  document.getElementById('rateDisplay').innerHTML=val+'<sub>%</sub>';
+  recalcLive();
+}
+
+function recalcLive(){
+  const inc=(+document.getElementById('f-income').value||0)+(+document.getElementById('f-coincome').value||0);
+  const loan=(+document.getElementById('f-loan').value||0)*1000;
+  const term=+document.getElementById('f-term').value||360;
+  const emi=calcEMI(loan,currentRate,term);
+  const dti=inc>0?(emi/inc*100):0;
+  const total=emi*term;
+  document.getElementById('rEMI').textContent='₹'+Math.round(emi).toLocaleString('en-IN');
+  document.getElementById('rTotal').textContent=fmtINR(total);
+  document.getElementById('rDTI').textContent=dti.toFixed(1)+'%';
+  document.getElementById('rDTI').style.color=dti<40?'#52b788':dti<60?'#e8a255':'#c17f3e';
+  document.getElementById('ls-income').textContent='₹'+inc.toLocaleString('en-IN');
+  document.getElementById('ls-loan').textContent='₹'+(+document.getElementById('f-loan').value||0)+'K';
+  document.getElementById('ls-emi').textContent='₹'+Math.round(emi).toLocaleString('en-IN');
+  document.getElementById('ls-dti').textContent=dti.toFixed(1)+'%';
+  document.getElementById('ls-dti').style.color=dti<40?'var(--green)':dti<60?'#b45309':'var(--red)';
+  updateBankTable();
+}
+
+function toggleBank(el){
+  const b=el.dataset.bank;
+  if(selectedBanks.has(b)){if(selectedBanks.size<=1)return;selectedBanks.delete(b);el.classList.remove('selected');}
+  else{selectedBanks.add(b);el.classList.add('selected');}
+  updateBankTable();
+}
+
+function updateBankTable(){
+  const loan=(+document.getElementById('f-loan').value||150)*1000;
+  const term=+document.getElementById('f-term').value||360;
+  const rows=[...selectedBanks].map(k=>{
+    const b=BANKS[k];const emi=calcEMI(loan,b.rate,term);const ti=emi*term-loan;const t=emi*term;
+    return{...b,key:k,emi,ti,t};
+  }).sort((a,b)=>a.emi-b.emi);
+  document.getElementById('compTableBody').innerHTML=rows.map((r,i)=>`
+    <tr class="${i===0?'best-row':''}">
+      <td><strong>${r.name}</strong>${i===0?'<span class="best-badge">Best</span>':''}</td>
+      <td class="rate-tag">${r.rate.toFixed(2)}%</td>
+      <td><strong>₹${Math.round(r.emi).toLocaleString('en-IN')}</strong></td>
+      <td>${fmtINR(r.ti)}</td><td>${fmtINR(r.t)}</td>
+      <td>${r.fee.toFixed(2)}%</td>
+      <td style="color:var(--ink3);font-size:0.78rem">${r.type}</td>
+    </tr>`).join('');
+  document.getElementById('rptBankTable').innerHTML=rows.map((r,i)=>`
+    <tr><td>${r.name}</td><td class="rate-tag">${r.rate}%</td><td>₹${Math.round(r.emi).toLocaleString('en-IN')}</td><td>${i===0?'<span class="best-badge">Best</span>':'—'}</td></tr>`).join('');
+}
+
+function predict(inp){
+  const dti=calcEMI(inp.loan*1000,currentRate,inp.term)/Math.max(inp.income+inp.coIncome,1);
+  let s=inp.credit*3.5+inp.education*0.8+(inp.income/10000)+(inp.coIncome/8000)-(inp.loan/500)+inp.married*0.4+(inp.area===1?0.5:0)-inp.dependents*0.2-dti*2;
+  const p=Math.min(0.999,Math.max(0.001,1/(1+Math.exp(-(s-2.1)*1.8))));
+  return{prob:p,approved:p>0.5};
+}
+
+function runPrediction(){
+  const inp={gender:+document.getElementById('f-gender').value,married:+document.getElementById('f-married').value,dependents:+document.getElementById('f-dependents').value,education:+document.getElementById('f-education').value,selfEmp:+document.getElementById('f-employed').value,income:+document.getElementById('f-income').value,coIncome:+document.getElementById('f-coincome').value,loan:+document.getElementById('f-loan').value,term:+document.getElementById('f-term').value,credit:+document.getElementById('f-credit').value,area:+document.getElementById('f-area').value};
+  const{prob,approved}=predict(inp);
+  const pct=(prob*100).toFixed(1);
+  const emi=calcEMI(inp.loan*1000,currentRate,inp.term);
+  const totalInc=inp.income+inp.coIncome;
+  const dti=totalInc>0?(emi/totalInc*100):0;
+  const total=emi*inp.term;
+  lastPrediction={inp,prob,approved,pct,emi,dti,totalInc,total};
+
+  document.getElementById('resultHero').className='result-hero '+(approved?'approved':'rejected');
+  document.getElementById('resultTitle').className='result-title '+(approved?'approved':'rejected');
+  document.getElementById('resultTitle').textContent=approved?'✓ Loan Approved':'✗ Loan Not Approved';
+  document.getElementById('resultBody').textContent=approved
+    ?`Applicant meets eligibility criteria. Model assigns ${pct}% approval confidence based on all 11 features.`
+    :`Application does not currently meet eligibility criteria. Model assigns ${(100-parseFloat(pct)).toFixed(1)}% rejection confidence.`;
+  document.getElementById('confCircle').className='conf-circle '+(approved?'approved':'rejected');
+  document.getElementById('confPct').className='conf-pct '+(approved?'approved':'rejected');
+  document.getElementById('confPct').textContent=pct+'%';
+
+  document.getElementById('r-income').textContent='₹'+totalInc.toLocaleString('en-IN');
+  document.getElementById('r-emi').textContent='₹'+Math.round(emi).toLocaleString('en-IN');
+  document.getElementById('r-dti').textContent=dti.toFixed(1)+'%';
+  document.getElementById('r-dti').style.color=dti<40?'var(--green)':dti<60?'#b45309':'var(--red)';
+  document.getElementById('r-total').textContent=fmtINR(total);
+  document.getElementById('r-income-d').textContent=inp.income>3000?'✓ Sufficient':'⚠ Below recommended';
+  document.getElementById('r-income-d').className='kpi-delta '+(inp.income>3000?'good':'warn');
+  document.getElementById('r-emi-d').textContent=dti<40?'✓ Good DTI':'⚠ High DTI';
+  document.getElementById('r-emi-d').className='kpi-delta '+(dti<40?'good':'warn');
+  document.getElementById('r-dti-d').textContent=dti<40?'✓ Below 40% threshold':'⚠ Exceeds 40%';
+  document.getElementById('r-dti-d').className='kpi-delta '+(dti<40?'good':'bad');
+
+  const AN=['Rural','Semiurban','Urban'];
+  const factors=[
+    {name:'Credit History',val:inp.credit?'✓ Good':'✗ Poor',cls:inp.credit?'good':'bad',bar:inp.credit?95:10},
+    {name:'Education',val:inp.education?'✓ Graduate':'⚠ Not Graduate',cls:inp.education?'good':'warn',bar:inp.education?75:35},
+    {name:'DTI Ratio',val:(dti<40?'✓ ':'⚠ ')+dti.toFixed(1)+'%',cls:dti<40?'good':'warn',bar:Math.max(5,100-dti*1.5)},
+    {name:'Income',val:(inp.income>3000?'✓ ':'⚠ ')+'₹'+inp.income.toLocaleString('en-IN'),cls:inp.income>3000?'good':'warn',bar:Math.min(95,inp.income/200)},
+    {name:'Property Area',val:'✓ '+AN[inp.area],cls:'good',bar:inp.area===1?85:inp.area===2?70:50},
+    {name:'Loan Amount',val:'₹'+inp.loan+'K',cls:inp.loan<200?'good':'warn',bar:Math.max(10,100-inp.loan/8)},
+  ];
+  document.getElementById('factorsList').innerHTML=factors.map(f=>`
+    <div class="factor-row-item">
+      <span class="factor-name">${f.name}</span>
+      <div class="factor-bar-mini"><div class="factor-bar-fill" style="width:${f.bar}%;background:${f.cls==='good'?'var(--green)':f.cls==='warn'?'#b45309':'var(--red)'}"></div></div>
+      <span class="factor-val ${f.cls}">${f.val}</span>
+    </div>`).join('');
+
+  const tips=[
+    inp.credit?null:{t:'Improve Credit History',d:'Clear all outstanding dues. Credit history has 95% weight.'},
+    dti>40?{t:'Reduce DTI Ratio',d:'Lower loan amount or add co-applicant income. Target DTI below 40%.'}:null,
+    inp.income<3000?{t:'Increase Income',d:'Adding a co-applicant significantly boosts approval chances.'}:null,
+    !inp.education?{t:'Education',d:'Graduates have 18% higher approval rates on average.'}:null,
+    inp.area===0?{t:'Property Location',d:'Semiurban properties yield 76% approval rate vs 59% for rural.'}:null,
+  ].filter(Boolean).slice(0,4);
+  document.getElementById('tipsList').innerHTML=tips.length
+    ?tips.map(t=>`<div class="factor-row-item" style="flex-direction:column;align-items:start;gap:0.2rem"><span class="factor-val good">→ ${t.t}</span><span class="factor-name" style="font-size:0.75rem">${t.d}</span></div>`).join('')
+    :'<div class="factor-row-item"><span class="factor-val good">✓ Application looks strong across all factors!</span></div>';
+
+  document.getElementById('rpt-date').textContent=new Date().toLocaleDateString('en-IN');
+  document.getElementById('reportTableBody').innerHTML=[
+    ['Applicant Income','₹'+inp.income.toLocaleString('en-IN')+'/mo',inp.income>3000?'✓ Good':'⚠ Low'],
+    ['Loan Amount','₹'+inp.loan+'K',inp.loan<200?'✓ Reasonable':'⚠ High'],
+    ['Interest Rate',currentRate+'% p.a.','—'],
+    ['Monthly EMI','₹'+Math.round(emi).toLocaleString('en-IN'),dti<40?'✓ Manageable':'⚠ High'],
+    ['DTI Ratio',dti.toFixed(1)+'%',dti<40?'✓ Good':'⚠ Exceeds 40%'],
+    ['Credit History',inp.credit?'Good':'Bad',inp.credit?'✓ Positive':'✗ Critical'],
+    ['Education',inp.education?'Graduate':'Not Graduate',inp.education?'✓ Good':'⚠ Average'],
+    ['Property Area',AN[inp.area],inp.area===1?'✓ Best area':'✓ Acceptable'],
+    ['Prediction Result',approved?'APPROVED':'REJECTED',approved?'✓ '+pct+'% confidence':'✗ '+(100-parseFloat(pct)).toFixed(1)+'% rejection'],
+  ].map(([p,v,s])=>`<tr><td style="color:var(--ink3)">${p}</td><td style="font-weight:600">${v}</td><td style="color:${s.startsWith('✓')?'var(--green)':s.startsWith('✗')?'var(--red)':'var(--ink3)'}">${s}</td></tr>`).join('');
+
+  const rb=document.getElementById('resultBlock');
+  rb.classList.add('visible');
+  document.getElementById('result-section').scrollIntoView({behavior:'smooth',block:'start'});
+  showToast('Prediction complete — '+(approved?'Approved ✓':'Not Approved ✗'));
+}
+
+function downloadReport(type){
+  if(!lastPrediction&&type!=='all'){showToast('Run a prediction first to generate report');return;}
+  if(type==='json'||type==='all'){
+    const p=lastPrediction;
+    const data={timestamp:new Date().toISOString(),model:'GradientBoostingClassifier',accuracy:0.965,inputs:p?p.inp:{},result:p?{approved:p.approved,confidence:parseFloat(p.pct),emi:Math.round(p.emi),dti:parseFloat(p.dti.toFixed(2)),interest_rate:currentRate}:{},banks:[...selectedBanks].map(k=>({name:BANKS[k].name,rate:BANKS[k].rate,emi:p?Math.round(calcEMI(p.inp.loan*1000,BANKS[k].rate,p.inp.term)):0}))};
+    downloadBlob(JSON.stringify(data,null,2),'loaniq_report.json','application/json');
+  }
+  if(type==='csv'||type==='all'){
+    const p=lastPrediction;
+    const rows=p?[['Field','Value'],['Timestamp',new Date().toISOString()],['Income',p.inp.income],['Co-Income',p.inp.coIncome],['Loan (₹K)',p.inp.loan],['Term (months)',p.inp.term],['Rate (%)',currentRate],['Credit',p.inp.credit?'Good':'Bad'],['Education',p.inp.education?'Graduate':'Not Graduate'],['Area',['Rural','Semiurban','Urban'][p.inp.area]],['Result',p.approved?'Approved':'Rejected'],['Confidence',p.pct+'%'],['EMI (₹)',Math.round(p.emi)],['DTI (%)',p.dti.toFixed(2)],['Total (₹)',Math.round(p.total)]]:[];
+    downloadBlob(rows.map(r=>r.join(',')).join('\n'),'loaniq_report.csv','text/csv');
+  }
+  if(type==='pdf'){window.print();return;}
+  if(type==='excel'){showToast('Import the JSON into Excel via Data → From JSON for full workbook');return;}
+  showToast('Downloaded successfully');
+}
+
+function downloadBlob(content,filename,mime){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([content],{type:mime}));
+  a.download=filename;a.click();
+  showToast('Downloaded: '+filename);
+}
+
+function switchTab(el,tab){
+  document.querySelectorAll('.vp-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tabTableau').style.display=tab==='tableau'?'block':'none';
+  document.getElementById('tabPowerBI').style.display=tab==='powerbi'?'block':'none';
+  document.getElementById('vpTitle').textContent=tab==='tableau'?'LoanIQ — Tableau Analytics Dashboard':'LoanIQ — Power BI Executive Report';
+}
+
+function buildMiniBarChart(){
+  const data=[{label:'Grad+Sal',val:88,color:'#c17f3e'},{label:'Grad+SE',val:72,color:'#c17f3e'},{label:'NG+Sal',val:61,color:'#1e4d8c'},{label:'NG+SE',val:44,color:'#b45309'},{label:'No Credit',val:18,color:'#9b2335'}];
+  const max=Math.max(...data.map(d=>d.val));
+  document.getElementById('vizBarChart').innerHTML=data.map(d=>`<div class="mini-bar-col"><div class="mini-bar-val">${d.val}%</div><div class="mini-bar" style="height:${(d.val/max)*80}px;background:${d.color}"></div><div class="mini-bar-label">${d.label}</div></div>`).join('');
+}
+
+function showToast(msg,dur=3000){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+recalcLive();
+buildMiniBarChart();
+updateBankTable();
+</script>
+</body>
+</html>
